@@ -1,6 +1,56 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import gsap from 'gsap';
+import Lenis from 'lenis';
 
 function App() {
+  const bgRingRef = useRef(null);
+  const cyanRingRef = useRef(null);
+
+  useEffect(() => {
+    // 1. Initialize Smooth Scrolling
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // 2. Continuous GSAP Floating Animations
+    gsap.to(bgRingRef.current, {
+      y: -25,
+      rotation: 15,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    gsap.to(cyanRingRef.current, {
+      y: 25,
+      rotation: -15,
+      duration: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   return (
     <>
       {/* TopAppBar */}

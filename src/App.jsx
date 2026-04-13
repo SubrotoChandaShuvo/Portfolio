@@ -83,13 +83,18 @@ function App() {
 
       <main className="relative min-h-screen pt-20 pb-32 px-6 overflow-hidden flex flex-col items-center">
         {/* Background Decorative Elements */}
-        <div className="absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none"></div>
-        <div className="absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none"></div>
+        <div ref={bgRingRef} className="absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none"></div>
+        <div ref={cyanRingRef} className="absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none"></div>
 
         {/* Hero Section */}
         <section className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">
           {/* Hero Image Container with Layering */}
-          <div className="relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0"
+          >
             {/* Cyan Geometric Accent */}
             <div className="absolute -top-4 -left-4 w-24 h-24 border border-tertiary rounded-full pointer-events-none opacity-40"></div>
             
@@ -103,10 +108,15 @@ function App() {
             
             {/* Floating Decorative Coral Ring */}
             <div className="absolute -bottom-8 -right-8 w-40 h-40 border-[12px] border-[#FF6B6B]/15 rounded-full pointer-events-none lg:translate-x-12 lg:translate-y-12"></div>
-          </div>
+          </motion.div>
 
           {/* Content Area */}
-          <div className="text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            className="text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start"
+          >
             <div>
               <h1 className="text-5xl lg:text-7xl font-headline font-bold leading-tight tracking-tight">
                 Hi, I'm <br className="hidden lg:block"/>
@@ -138,7 +148,7 @@ function App() {
                 Computer Science Engineering student at Metropolitan University with a strong focus on frontend development and leadership. Solid foundation in modern web technologies.
               </p>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* About Section */}

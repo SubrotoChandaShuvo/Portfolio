@@ -23,9 +23,9 @@ function App() {
 
           {/* Action Button & Mobile Menu */}
           <div className="flex items-center gap-4">
-            <button className="hidden md:block font-label text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-2 hover:bg-white hover:text-black hover:border-white transition-colors duration-300 shadow-lg">
+            <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" className="hidden md:block font-label text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-2 hover:bg-white hover:text-black hover:border-white transition-colors duration-300 shadow-lg">
               Resume
-            </button>
+            </a>
             <span className="material-symbols-outlined lg:hidden text-white cursor-pointer hover:opacity-80">menu</span>
           </div>
         </header>
@@ -47,7 +47,7 @@ function App() {
               <img 
                 alt="Elegant portrait of Subroto Chanda Shuvo" 
                 className="w-full h-full object-cover" 
-                src="/profile.jpg"
+                src="/Photo.png"
               />
             </div>
             
@@ -73,7 +73,7 @@ function App() {
                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
               </button>
               
-              <a className="flex items-center gap-2 text-on-surface/60 hover:text-[#FFB3B0] transition-colors py-2 group" href="#">
+              <a className="flex items-center gap-2 text-on-surface/60 hover:text-[#FFB3B0] transition-colors py-2 group" href="/Resume.pdf" target="_blank" rel="noopener noreferrer">
                 <span className="font-label tracking-widest text-sm uppercase">Download CV</span>
                 <span className="material-symbols-outlined text-sm group-hover:translate-y-1 transition-transform">south</span>
               </a>
@@ -85,7 +85,7 @@ function App() {
                 <div className="h-[1px] flex-grow bg-outline-variant/30"></div>
               </div>
               <p className="text-on-surface/70 text-base leading-relaxed">
-                Based in Netherland i'm developer and UI/UX designer. Hey are looking for designer to build your brand and grow your business? let's shake hands with me.
+                Computer Science Engineering student at Metropolitan University with a strong focus on frontend development and leadership. Solid foundation in modern web technologies.
               </p>
             </div>
           </div>
@@ -96,10 +96,10 @@ function App() {
           <div className="w-full md:w-1/2">
             <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#FF6B6B] mb-6">Discover who I am.</h2>
             <p className="text-on-surface/80 leading-relaxed text-lg mb-6 font-light">
-              I am a passionate developer and UI/UX designer blending technical expertise with creative aesthetics. I specialize in building stunning, responsive web applications utilizing modern frameworks, and deeply believe that digital experiences should be both powerful and wildly beautiful.
+              I am a Computer Science and Engineering student at Metropolitan University, Sylhet, with a strong focus on frontend development and experience in leadership and education. I specialize in building stunning, responsive web applications utilizing modern frameworks like React and Tailwind CSS.
             </p>
             <p className="text-on-surface/80 leading-relaxed text-lg font-light">
-              With a strong eye for detail, I embrace the challenge of resolving complex problems through accessible, user-centric design solutions.
+              I possess a solid foundation in modern web technologies and have additionally trained in Data Science and Machine Learning, allowing me to blend deep technical expertise with creative, user-centric design solutions.
             </p>
           </div>
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-6 p-4">
@@ -125,17 +125,17 @@ function App() {
             {/* Item 1 */}
             <div className="mb-20 relative pl-8 md:pl-0 md:flex items-center group">
               <div className="hidden md:block md:w-1/2 pr-16 text-right">
-                <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">Senior Frontend Engineer</h3>
-                <p className="text-[#FF6B6B] mt-1 font-label">Creative Agency Studio</p>
-                <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Building modern glassmorphism apps, leading React development, and mentoring junior engineers.</p>
+                <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">Senior Faculty</h3>
+                <p className="text-[#FF6B6B] mt-1 font-label">TRC Education</p>
+                <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Mentoring and leadership, fostering growth and providing education using modern pedagogical approaches.</p>
               </div>
               <div className="absolute left-[-9px] md:left-1/2 md:-ml-2 w-5 h-5 bg-[#FF6B6B] rounded-full top-2 md:top-auto ring-4 ring-[#131313] group-hover:scale-125 transition-transform duration-300 shadow-[0_0_15px_#FF6B6B]"></div>
               <div className="md:w-1/2 md:pl-16">
-                <span className="inline-block bg-[#FF6B6B]/10 border border-[#FF6B6B]/30 rounded-full px-5 py-1.5 text-sm text-[#FFB3B0] font-label mb-2 md:mb-0 backdrop-blur-md">2022 - Present</span>
+                <span className="inline-block bg-[#FF6B6B]/10 border border-[#FF6B6B]/30 rounded-full px-5 py-1.5 text-sm text-[#FFB3B0] font-label mb-2 md:mb-0 backdrop-blur-md">Jan 2023 - Present</span>
                 <div className="md:hidden mt-4">
-                  <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">Senior Frontend Engineer</h3>
-                  <p className="text-[#FF6B6B] mt-1 font-label">Creative Agency Studio</p>
-                  <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Building modern glassmorphism apps, leading React development, and mentoring junior engineers.</p>
+                  <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">Senior Faculty</h3>
+                  <p className="text-[#FF6B6B] mt-1 font-label">TRC Education</p>
+                  <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Mentoring and leadership, fostering growth and providing education using modern pedagogical approaches.</p>
                 </div>
               </div>
             </div>
@@ -143,18 +143,18 @@ function App() {
             {/* Item 2 */}
             <div className="relative pl-8 md:pl-0 md:flex items-center group">
               <div className="md:w-1/2 md:pr-16 md:text-right">
-                <span className="inline-block bg-[#4CD6FF]/10 border border-[#4CD6FF]/30 rounded-full px-5 py-1.5 text-sm text-[#4CD6FF] font-label mb-2 md:mb-0 backdrop-blur-md">2019 - 2022</span>
+                <span className="inline-block bg-[#4CD6FF]/10 border border-[#4CD6FF]/30 rounded-full px-5 py-1.5 text-sm text-[#4CD6FF] font-label mb-2 md:mb-0 backdrop-blur-md">Apr 2024 - Dec 2024</span>
                 <div className="md:hidden mt-4">
-                  <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">UI/UX Designer</h3>
-                  <p className="text-[#4CD6FF] mt-1 font-label">Tech Startups</p>
-                  <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Designed elegant, accessible interfaces. Collaborated directly with business leaders and engineers.</p>
+                  <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">PDS Training</h3>
+                  <p className="text-[#4CD6FF] mt-1 font-label">SUST</p>
+                  <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Comprehensive training in Python, Data Science, and fundamental algorithm design.</p>
                 </div>
               </div>
               <div className="absolute left-[-9px] md:left-1/2 md:-ml-2 w-5 h-5 bg-[#4CD6FF] rounded-full top-2 md:top-auto ring-4 ring-[#131313] group-hover:scale-125 transition-transform duration-300 shadow-[0_0_15px_#4CD6FF]"></div>
               <div className="hidden md:block md:w-1/2 pl-16 text-left">
-                <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">UI/UX Designer</h3>
-                <p className="text-[#4CD6FF] mt-1 font-label">Tech Startups</p>
-                <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Designed elegant, accessible interfaces. Collaborated directly with business leaders and engineers.</p>
+                <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">PDS Training</h3>
+                <p className="text-[#4CD6FF] mt-1 font-label">SUST</p>
+                <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Comprehensive training in Python, Data Science, and fundamental algorithm design.</p>
               </div>
             </div>
           </div>
@@ -168,7 +168,7 @@ function App() {
           </div>
           
           <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-            {['React', 'Vite', 'Tailwind CSS', 'Figma', 'TypeScript', 'Node.js', 'Next.js', 'UI/UX Design', 'Git & GitHub', 'Framer Motion'].map((skill) => (
+            {['HTML/CSS', 'JavaScript', 'React', 'MongoDB', 'MySQL', 'C/C++', 'Python', 'Pandas', 'Scikit-learn', 'Vite', 'Tailwind', 'Git'].map((skill) => (
               <div key={skill} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-8 py-3 flex items-center justify-center shadow-lg hover:shadow-[0_0_20px_rgba(255,107,107,0.2)] hover:-translate-y-1 transition-all cursor-default">
                 <span className="text-[#E5E2E1] font-medium tracking-wide">{skill}</span>
               </div>
@@ -185,9 +185,9 @@ function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { title: "E-Commerce Dashboard", desc: "A sleek analytics dashboard for online retailers with real-time data visualization.", tech: ["React", "Tailwind", "Chart.js"], color: "text-[#FF6B6B]" },
-              { title: "Portfolio Concept", desc: "Modern glassmorphism portfolio site with premium aesthetics.", tech: ["Vite", "React", "Glass UI"], color: "text-[#4CD6FF]" },
-              { title: "Fintech App UI", desc: "Banking interface focusing on accessibility and seamless transactions.", tech: ["Figma", "Prototyping"], color: "text-[#FFB3B0]" }
+              { title: "BloodLove", desc: "A MERN stack application dedicated to facilitating blood donations efficiently.", tech: ["React", "JavaScript", "Vite", "SweetAlert2"], color: "text-[#FF6B6B]" },
+              { title: "Store of Applications", desc: "A dynamic web app for searching and downloading curated software effortlessly.", tech: ["React", "Tailwind CSS", "Vite"], color: "text-[#4CD6FF]" },
+              { title: "Personal Portfolio", desc: "My modern, glassmorphism-styled personal portfolio.", tech: ["React", "Tailwind CSS"], color: "text-[#FFB3B0]" }
             ].map((project, idx) => (
               <div key={idx} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all duration-500 group shadow-2xl flex flex-col h-full hover:border-white/20">
                 <div className="w-full aspect-video bg-black/40 relative overflow-hidden flex items-center justify-center border-b border-white/5">

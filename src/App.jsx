@@ -1,56 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import gsap from 'gsap';
-import Lenis from 'lenis';
+import React from 'react';
 
 function App() {
-  const bgRingRef = useRef(null);
-  const cyanRingRef = useRef(null);
-
-  useEffect(() => {
-    // 1. Initialize Smooth Scrolling
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    // 2. Continuous GSAP Floating Animations
-    gsap.to(bgRingRef.current, {
-      y: -25,
-      rotation: 15,
-      duration: 3,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-
-    gsap.to(cyanRingRef.current, {
-      y: 25,
-      rotation: -15,
-      duration: 4,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
   return (
     <>
       {/* TopAppBar */}
@@ -83,18 +33,13 @@ function App() {
 
       <main className="relative min-h-screen pt-20 pb-32 px-6 overflow-hidden flex flex-col items-center">
         {/* Background Decorative Elements */}
-        <div ref={bgRingRef} className="absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none"></div>
-        <div ref={cyanRingRef} className="absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none"></div>
+        <div className="absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none animate-[float_3s_ease-in-out_infinite]"></div>
+        <div className="absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none animate-[float_4s_ease-in-out_infinite_reverse]"></div>
 
         {/* Hero Section */}
         <section className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">
-          {/* Hero Image Container with Layering */}
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0"
-          >
+          {/* Hero Image Container */}
+          <div className="relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0 animate-[fadeInRight_1s_ease-out_forwards]">
             {/* Cyan Geometric Accent */}
             <div className="absolute -top-4 -left-4 w-24 h-24 border border-tertiary rounded-full pointer-events-none opacity-40"></div>
             
@@ -108,22 +53,17 @@ function App() {
             
             {/* Floating Decorative Coral Ring */}
             <div className="absolute -bottom-8 -right-8 w-40 h-40 border-[12px] border-[#FF6B6B]/15 rounded-full pointer-events-none lg:translate-x-12 lg:translate-y-12"></div>
-          </motion.div>
+          </div>
 
           {/* Content Area */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            className="text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start"
-          >
+          <div className="text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start animate-[fadeInLeft_1s_ease-out_0.2s_forwards] opacity-0">
             <div>
               <h1 className="text-5xl lg:text-7xl font-headline font-bold leading-tight tracking-tight">
                 Hi, I'm <br className="hidden lg:block"/>
                 <span className="text-[#FF6B6B]">Subroto Chanda Shuvo</span>
               </h1>
               <p className="text-xl lg:text-2xl font-body text-on-surface/80 mt-4 font-light">
-                User Interface Designer
+                MERN Stack Developer
               </p>
             </div>
             
@@ -145,10 +85,10 @@ function App() {
                 <div className="h-[1px] flex-grow bg-outline-variant/30"></div>
               </div>
               <p className="text-on-surface/70 text-base leading-relaxed">
-                Computer Science Engineering student at Metropolitan University with a strong focus on frontend development and leadership. Solid foundation in modern web technologies.
+                I am a MERN Stack Developer and Computer Science student at Metropolitan University with a strong focus on building full-stack web applications using MongoDB, Express.js, React, and Node.js.
               </p>
             </div>
-          </motion.div>
+          </div>
         </section>
 
         {/* About Section */}
@@ -156,10 +96,10 @@ function App() {
           <div className="w-full md:w-1/2">
             <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#FF6B6B] mb-6">Discover who I am.</h2>
             <p className="text-on-surface/80 leading-relaxed text-lg mb-6 font-light">
-              I am a Computer Science and Engineering student at Metropolitan University, Sylhet, with a strong focus on frontend development and experience in leadership and education. I specialize in building stunning, responsive web applications utilizing modern frameworks like React and Tailwind CSS.
+              I am a MERN Stack Developer and Computer Science student at Metropolitan University, Sylhet. I build full-stack web applications using MongoDB, Express.js, React, and Node.js — combining powerful backends with beautiful, responsive frontends.
             </p>
             <p className="text-on-surface/80 leading-relaxed text-lg font-light">
-              I possess a solid foundation in modern web technologies and have additionally trained in Data Science and Machine Learning, allowing me to blend deep technical expertise with creative, user-centric design solutions.
+              Beyond web development, I have trained in Data Science and Machine Learning, and I bring experience in leadership and education through my role at TRC Education.
             </p>
           </div>
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-6 p-4">
@@ -245,14 +185,55 @@ function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { title: "BloodLove", desc: "A MERN stack application dedicated to facilitating blood donations efficiently.", tech: ["React", "JavaScript", "Vite", "SweetAlert2"], color: "text-[#FF6B6B]" },
-              { title: "Store of Applications", desc: "A dynamic web app for searching and downloading curated software effortlessly.", tech: ["React", "Tailwind CSS", "Vite"], color: "text-[#4CD6FF]" },
-              { title: "Personal Portfolio", desc: "My modern, glassmorphism-styled personal portfolio.", tech: ["React", "Tailwind CSS"], color: "text-[#FFB3B0]" }
+              {
+                title: "Blood Love",
+                desc: "A MERN stack application dedicated to facilitating blood donations efficiently.",
+                tech: ["React", "JavaScript", "Vite", "SweetAlert2"],
+                color: "text-[#FF6B6B]",
+                image: "/proj-bloodlove.png",
+                liveUrl: "https://candid-douhua-d628ca.netlify.app/"
+              },
+              {
+                title: "Payoo Mobile",
+                desc: "A mobile application interface project focused on clean UX and core wallet interactions.",
+                tech: ["HTML", "CSS", "JavaScript"],
+                color: "text-[#FFB3B0]",
+                image: "/proj-payoo.png",
+                liveUrl: "https://subrotochandashuvo.github.io/Payo-Mobile-Application/home.html"
+              },
+              {
+                title: "Store of Applications",
+                desc: "A dynamic web app for searching and downloading curated software effortlessly.",
+                tech: ["React", "Tailwind CSS", "Vite"],
+                color: "text-[#4CD6FF]",
+                image: "/proj-storeofapplications.png",
+                liveUrl: "https://flourishing-lily-5fb3c3.netlify.app/AllApps/23"
+              },
+              {
+                title: "Paw Mart",
+                desc: "An e-commerce themed project for showcasing pet products in an engaging storefront.",
+                tech: ["HTML", "CSS", "JavaScript"],
+                color: "text-[#4CD6FF]",
+                image: "/proj-pawmart.png",
+                liveUrl: "https://cosmic-melba-af77ae.netlify.app/"
+              },
+              {
+                title: "Emergency Hotline",
+                desc: "A hotline utility application built to improve emergency information access quickly.",
+                tech: ["HTML", "CSS", "JavaScript"],
+                color: "text-[#FF6B6B]",
+                image: "/proj-emergency.png",
+                liveUrl: "https://subrotochandashuvo.github.io/Emergency-Hotline/"
+              }
             ].map((project, idx) => (
               <div key={idx} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all duration-500 group shadow-2xl flex flex-col h-full hover:border-white/20">
                 <div className="w-full aspect-video bg-black/40 relative overflow-hidden flex items-center justify-center border-b border-white/5">
-                  <span className="material-symbols-outlined text-5xl text-white/20 group-hover:scale-125 transition-transform duration-700">imagesmode</span>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#131313] to-transparent opacity-90"></div>
+                  <img
+                    src={project.image}
+                    alt={`${project.title} preview`}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#131313]/70 via-[#131313]/30 to-transparent"></div>
                 </div>
                 <div className="p-8 flex flex-col flex-grow">
                   <h3 className={`text-2xl font-bold font-headline ${project.color} mb-3`}>{project.title}</h3>
@@ -265,8 +246,8 @@ function App() {
                   </div>
                   
                   <div className="flex items-center gap-4 mt-auto">
-                    <a href="#" className="flex-1 text-center bg-white/10 hover:bg-white/20 text-white py-3 rounded-full font-semibold transition-colors duration-300 text-sm">View Demo</a>
-                    <a href="#" className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/20 border border-white/10 text-white rounded-full transition-colors duration-300">
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex-1 text-center bg-white/10 hover:bg-white/20 text-white py-3 rounded-full font-semibold transition-colors duration-300 text-sm">View Demo</a>
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/20 border border-white/10 text-white rounded-full transition-colors duration-300">
                       <span className="material-symbols-outlined text-[20px]">code</span>
                     </a>
                   </div>
@@ -323,14 +304,20 @@ function App() {
             </div>
             
             <div className="flex items-center gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#FF6B6B] hover:border-[#FF6B6B] transition-all duration-300">
-                <span className="material-symbols-outlined text-[20px]">public</span>
+              <a href="https://www.facebook.com/subrotochanda.subrotochanda.3" target="_blank" rel="noopener noreferrer" aria-label="Facebook profile" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#FF6B6B] hover:border-[#FF6B6B] transition-all duration-300">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                  <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.24 10.44 22v-7.03H7.9v-2.91h2.54V9.84c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.2 2.23.2v2.46h-1.25c-1.23 0-1.61.77-1.61 1.56v1.88h2.74l-.44 2.91h-2.3V22C18.34 21.24 22 17.08 22 12.06z" />
+                </svg>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#4CD6FF] hover:border-[#4CD6FF] transition-all duration-300">
-                <span className="material-symbols-outlined text-[20px]">share</span>
+              <a href="https://www.linkedin.com/in/subroto-chanda-shuvo" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#4CD6FF] hover:border-[#4CD6FF] transition-all duration-300">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                  <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M8.34 10.34H5.67V18H8.34V10.34M7 6.75A1.56 1.56 0 1 0 7 9.87A1.56 1.56 0 1 0 7 6.75M18.33 13.34C18.33 11 17.84 9.2 15.1 9.2C13.79 9.2 12.91 9.92 12.55 10.61H12.51V10.34H9.95V18H12.62V14.2C12.62 13.2 12.81 12.23 14.05 12.23C15.27 12.23 15.29 13.37 15.29 14.27V18H18V13.8L18.33 13.34Z" />
+                </svg>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#FFB3B0] hover:border-[#FFB3B0] transition-all duration-300">
-                <span className="material-symbols-outlined text-[20px]">alternate_email</span>
+              <a href="mailto:subrotochandashuvo@gmail.com" aria-label="Send email" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#FFB3B0] hover:border-[#FFB3B0] transition-all duration-300">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                  <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" />
+                </svg>
               </a>
             </div>
           </div>
@@ -346,14 +333,20 @@ function App() {
 
         {/* Social Icons Column (Fixed Left) */}
         <aside className="fixed bottom-12 left-6 flex flex-col gap-6 z-40 hidden md:flex">
-          <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="#">
-            <i className="material-symbols-outlined">public</i>
+          <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="https://www.facebook.com/subrotochanda.subrotochanda.3" target="_blank" rel="noopener noreferrer" aria-label="Facebook profile">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" aria-hidden="true">
+              <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.24 10.44 22v-7.03H7.9v-2.91h2.54V9.84c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.2 2.23.2v2.46h-1.25c-1.23 0-1.61.77-1.61 1.56v1.88h2.74l-.44 2.91h-2.3V22C18.34 21.24 22 17.08 22 12.06z" />
+            </svg>
           </a>
-          <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="#">
-            <i className="material-symbols-outlined">share</i>
+          <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="https://www.linkedin.com/in/subroto-chanda-shuvo" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" aria-hidden="true">
+              <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M8.34 10.34H5.67V18H8.34V10.34M7 6.75A1.56 1.56 0 1 0 7 9.87A1.56 1.56 0 1 0 7 6.75M18.33 13.34C18.33 11 17.84 9.2 15.1 9.2C13.79 9.2 12.91 9.92 12.55 10.61H12.51V10.34H9.95V18H12.62V14.2C12.62 13.2 12.81 12.23 14.05 12.23C15.27 12.23 15.29 13.37 15.29 14.27V18H18V13.8L18.33 13.34Z" />
+            </svg>
           </a>
-          <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="#">
-            <i className="material-symbols-outlined">alternate_email</i>
+          <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="mailto:subrotochandashuvo@gmail.com" aria-label="Send email">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" aria-hidden="true">
+              <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" />
+            </svg>
           </a>
         </aside>
 

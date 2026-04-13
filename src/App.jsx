@@ -164,11 +164,11 @@ function App() {
           </div>
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-6 p-4">
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 flex flex-col justify-center items-center text-center shadow-2xl hover:bg-white/10 transition-colors">
-              <span className="text-5xl font-headline font-bold text-[#FFB3B0]">3+</span>
-              <span className="text-xs text-on-surface/60 uppercase tracking-widest mt-4">Years Exp</span>
+              <span className="text-5xl font-headline font-bold text-[#FFB3B0]">1+</span>
+              <span className="text-xs text-on-surface/60 uppercase tracking-widest mt-4">Year Exp</span>
             </div>
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 flex flex-col justify-center items-center text-center shadow-2xl hover:bg-white/10 transition-colors translate-y-12">
-              <span className="text-5xl font-headline font-bold text-[#4CD6FF]">40+</span>
+              <span className="text-5xl font-headline font-bold text-[#4CD6FF]">12+</span>
               <span className="text-xs text-on-surface/60 uppercase tracking-widest mt-4">Projects</span>
             </div>
           </div>

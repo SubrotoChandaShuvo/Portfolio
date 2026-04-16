@@ -1,6 +1,53 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 function App() {
+  useEffect(() => {
+    let animationFrameId;
+    let lenis;
+
+    const setupLenis = async () => {
+      const Lenis = (await import('lenis')).default;
+      lenis = new Lenis({
+        duration: 1.1,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+      });
+
+      const raf = (time) => {
+        lenis.raf(time);
+        animationFrameId = window.requestAnimationFrame(raf);
+      };
+
+      animationFrameId = window.requestAnimationFrame(raf);
+    };
+
+    setupLenis();
+    // Prevent browser from restoring scroll position on refresh
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    return () => {
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+      if (lenis) {
+        lenis.destroy();
+      }
+    };
+  }, []);
+
+  const sectionReveal = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const projectReveal = {
+    hidden: { opacity: 0, y: 40, scale: 0.97 },
+    visible: { opacity: 1, y: 0, scale: 1 },
+  };
+
   return (
     <>
       {/* TopAppBar */}
@@ -92,7 +139,15 @@ function App() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="relative w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 mt-24 pt-24 px-6 md:px-0 scroll-mt-20">
+        <motion.section
+          id="about"
+          className="relative w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 mt-24 pt-24 px-6 md:px-0 scroll-mt-20"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <div className="w-full md:w-1/2">
             <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#FF6B6B] mb-6">Discover who I am.</h2>
             <p className="text-on-surface/80 leading-relaxed text-lg mb-6 font-light">
@@ -112,10 +167,18 @@ function App() {
               <span className="text-xs text-on-surface/60 uppercase tracking-widest mt-4">Projects</span>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Experience Section */}
-        <section id="experience" className="relative w-full max-w-4xl mx-auto mt-40 pt-24 px-6 md:px-0 scroll-mt-20">
+        <motion.section
+          id="experience"
+          className="relative w-full max-w-4xl mx-auto mt-40 pt-24 px-6 md:px-0 scroll-mt-20"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <div className="text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#e5e2e1]">My <span className="text-[#4CD6FF]">Experience</span></h2>
             <p className="text-on-surface/60 mt-4 text-sm tracking-widest uppercase font-label">My professional journey</p>
@@ -158,10 +221,18 @@ function App() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Tech Stack & Skills Section */}
-        <section id="skills" className="relative w-full max-w-6xl mx-auto mt-40 pt-24 px-6 md:px-0 scroll-mt-20">
+        <motion.section
+          id="skills"
+          className="relative w-full max-w-6xl mx-auto mt-40 pt-24 px-6 md:px-0 scroll-mt-20"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#e5e2e1]">Tech <span className="text-[#FF6B6B]">Stack</span></h2>
             <p className="text-on-surface/60 mt-4 text-sm tracking-widest uppercase font-label">Tools and Technologies</p>
@@ -174,10 +245,18 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* Projects Section */}
-        <section id="projects" className="relative w-full max-w-6xl mx-auto mt-40 pt-24 px-6 md:px-0 scroll-mt-20">
+        <motion.section
+          id="projects"
+          className="relative w-full max-w-6xl mx-auto mt-40 pt-24 px-6 md:px-0 scroll-mt-20"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.12 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#e5e2e1]">Featured <span className="text-[#4CD6FF]">Projects</span></h2>
             <p className="text-on-surface/60 mt-4 text-sm tracking-widest uppercase font-label">Some of my recent work</p>
@@ -226,7 +305,15 @@ function App() {
                 liveUrl: "https://subrotochandashuvo.github.io/Emergency-Hotline/"
               }
             ].map((project, idx) => (
-              <div key={idx} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all duration-500 group shadow-2xl flex flex-col h-full hover:border-white/20">
+              <motion.div
+                key={idx}
+                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all duration-500 group shadow-2xl flex flex-col h-full hover:border-white/20"
+                variants={projectReveal}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, ease: "easeOut", delay: idx * 0.1 }}
+              >
                 <div className="w-full aspect-video bg-black/40 relative overflow-hidden flex items-center justify-center border-b border-white/5">
                   <img
                     src={project.image}
@@ -252,13 +339,21 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* Contact Section */}
-        <section id="contact" className="relative w-full max-w-4xl mx-auto mt-40 pt-24 px-6 md:px-0 mb-40 scroll-mt-20">
+        <motion.section
+          id="contact"
+          className="relative w-full max-w-4xl mx-auto mt-40 pt-24 px-6 md:px-0 mb-40 scroll-mt-20"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#e5e2e1]">Let's <span className="text-[#FFB3B0]">Connect</span></h2>
             <p className="text-on-surface/60 mt-4 text-sm tracking-widest uppercase font-label">Ready to start a project?</p>
@@ -290,7 +385,7 @@ function App() {
               </button>
             </form>
           </div>
-        </section>
+        </motion.section>
 
         {/* Footer */}
         <footer className="w-full border-t border-white/10 bg-[#0a0a0a]/80 backdrop-blur-md py-12 px-6 mt-20 relative z-40">
@@ -359,23 +454,7 @@ function App() {
         </div>
       </main>
 
-      {/* BottomNavBar (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-8 w-full flex justify-center z-50">
-        <div className="bg-[#0E0E0E]/80 backdrop-blur-xl border border-white/5 rounded-full px-6 py-3 w-max flex gap-8 shadow-2xl items-center">
-          <a className="bg-gradient-to-br from-[#FFB3B0] to-[#FF6B6B] text-black rounded-full p-2 scale-110 transition-transform hover:scale-125 shadow-lg" href="#">
-            <span className="material-symbols-outlined">public</span>
-          </a>
-          <a className="text-[#E5E2E1]/50 p-2 hover:text-[#FFB3B0] transition-colors" href="#">
-            <span className="material-symbols-outlined">share</span>
-          </a>
-          <a className="text-[#E5E2E1]/50 p-2 hover:text-[#FFB3B0] transition-colors" href="#">
-            <span className="material-symbols-outlined">grid_view</span>
-          </a>
-          <a className="text-[#E5E2E1]/50 p-2 hover:text-[#FFB3B0] transition-colors" href="#">
-            <span className="material-symbols-outlined">mail</span>
-          </a>
-        </div>
-      </nav>
+
     </>
   );
 }

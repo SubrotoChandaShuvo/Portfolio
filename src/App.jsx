@@ -564,6 +564,11 @@ function App() {
                   <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M8.34 10.34H5.67V18H8.34V10.34M7 6.75A1.56 1.56 0 1 0 7 9.87A1.56 1.56 0 1 0 7 6.75M18.33 13.34C18.33 11 17.84 9.2 15.1 9.2C13.79 9.2 12.91 9.92 12.55 10.61H12.51V10.34H9.95V18H12.62V14.2C12.62 13.2 12.81 12.23 14.05 12.23C15.27 12.23 15.29 13.37 15.29 14.27V18H18V13.8L18.33 13.34Z" />
                 </svg>
               </a>
+              <a href="https://github.com/SubrotoChandaShuvo" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#7A8CFF] hover:border-[#7A8CFF] transition-all duration-300">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                  <path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" />
+                </svg>
+              </a>
               <a href="mailto:subrotochandashuvo@gmail.com" aria-label="Send email" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-[#FFB3B0] hover:border-[#FFB3B0] transition-all duration-300">
                 <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
                   <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" />
@@ -591,6 +596,11 @@ function App() {
           <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="https://www.linkedin.com/in/subroto-chanda-shuvo" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
             <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" aria-hidden="true">
               <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M8.34 10.34H5.67V18H8.34V10.34M7 6.75A1.56 1.56 0 1 0 7 9.87A1.56 1.56 0 1 0 7 6.75M18.33 13.34C18.33 11 17.84 9.2 15.1 9.2C13.79 9.2 12.91 9.92 12.55 10.61H12.51V10.34H9.95V18H12.62V14.2C12.62 13.2 12.81 12.23 14.05 12.23C15.27 12.23 15.29 13.37 15.29 14.27V18H18V13.8L18.33 13.34Z" />
+            </svg>
+          </a>
+          <a className="text-on-surface/40 hover:text-[#7A8CFF] transition-transform hover:scale-110" href="https://github.com/SubrotoChandaShuvo" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" />
             </svg>
           </a>
           <a className="text-on-surface/40 hover:text-tertiary transition-transform hover:scale-110" href="mailto:subrotochandashuvo@gmail.com" aria-label="Send email">

@@ -1,40 +1,185 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import Lenis from 'lenis';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 function App() {
+  const pageRef = useRef(null);
+  const lenisRef = useRef(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [cursorVisible, setCursorVisible] = useState(false);
+  const [cursorActive, setCursorActive] = useState(false);
+
   useEffect(() => {
-    let animationFrameId;
-    let lenis;
+    gsap.registerPlugin(ScrollTrigger);
 
-    const setupLenis = async () => {
-      const Lenis = (await import('lenis')).default;
-      lenis = new Lenis({
-        duration: 1.1,
-        smoothWheel: true,
-        wheelMultiplier: 1,
-      });
+    const lenis = new Lenis({
+      lerp: 0.065,
+      smoothWheel: true,
+      wheelMultiplier: 0.75,
+      touchMultiplier: 1.1,
+      syncTouch: true,
+      infinite: false,
+    });
+    lenisRef.current = lenis;
 
-      const raf = (time) => {
-        lenis.raf(time);
-        animationFrameId = window.requestAnimationFrame(raf);
-      };
-
-      animationFrameId = window.requestAnimationFrame(raf);
-    };
-
-    setupLenis();
     // Prevent browser from restoring scroll position on refresh
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
 
+    const onLenisScroll = (event) => {
+      ScrollTrigger.update();
+      setShowScrollTop(event.scroll > 550);
+      if (event.limit > 0) {
+        setScrollProgress(Math.min(event.scroll / event.limit, 1));
+      }
+    };
+    lenis.on('scroll', onLenisScroll);
+
+    const onMouseMove = (event) => {
+      setCursorVisible(true);
+      setCursorPosition({ x: event.clientX, y: event.clientY });
+    };
+    const onMouseLeave = () => setCursorVisible(false);
+    const onMouseOver = (event) => {
+      const target = event.target.closest('a, button, input, textarea, [role="button"]');
+      setCursorActive(Boolean(target));
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseover', onMouseOver);
+
+    const onAnchorClick = (event) => {
+      const target = event.target.closest('[data-lenis-anchor]');
+      if (!target) return;
+      const href = target.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+
+      const destination = document.querySelector(href);
+      if (!destination) return;
+
+      event.preventDefault();
+      lenis.scrollTo(destination, {
+        offset: -90,
+        duration: 1.4,
+        easing: (t) => 1 - Math.pow(1 - t, 4),
+      });
+    };
+    document.addEventListener('click', onAnchorClick);
+
+    const update = (time) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.js-hero-image',
+        { autoAlpha: 0, x: 70, scale: 0.92 },
+        { autoAlpha: 1, x: 0, scale: 1, duration: 1, ease: 'power3.out' }
+      );
+
+      gsap.fromTo(
+        '.js-hero-content',
+        { autoAlpha: 0, x: -70 },
+        { autoAlpha: 1, x: 0, duration: 1, ease: 'power3.out', delay: 0.15 }
+      );
+
+      gsap.to('.js-float-orb', {
+        y: -12,
+        duration: 2.6,
+        stagger: 0.35,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+
+      gsap.fromTo(
+        '.js-shooting-star',
+        { xPercent: -25, yPercent: -15, autoAlpha: 0, scaleX: 0.7 },
+        {
+          xPercent: 140,
+          yPercent: 150,
+          autoAlpha: 0.85,
+          scaleX: 1.2,
+          duration: 2.6,
+          ease: 'sine.out',
+          stagger: {
+            each: 1.8,
+            repeat: -1,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.js-about-card',
+        { autoAlpha: 0, y: 35, scale: 0.96 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '#about',
+            start: 'top 72%',
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.js-skill-pill',
+        { autoAlpha: 0, y: 20 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.45,
+          stagger: 0.05,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '#skills',
+            start: 'top 74%',
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.js-project-card',
+        { autoAlpha: 0, y: 36 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#projects',
+            start: 'top 72%',
+          },
+        }
+      );
+    }, pageRef);
+
     return () => {
-      if (animationFrameId) {
-        window.cancelAnimationFrame(animationFrameId);
-      }
-      if (lenis) {
-        lenis.destroy();
-      }
+      ctx.revert();
+      document.removeEventListener('click', onAnchorClick);
+      document.removeEventListener('mouseover', onMouseOver);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseleave', onMouseLeave);
+      lenis.off('scroll', onLenisScroll);
+      gsap.ticker.remove(update);
+      lenis.destroy();
+      lenisRef.current = null;
+      setShowScrollTop(false);
+      setCursorVisible(false);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
@@ -50,6 +195,13 @@ function App() {
 
   return (
     <>
+      <div className="fixed top-0 left-0 w-full h-[3px] z-[70] bg-white/5">
+        <div
+          className="h-full bg-gradient-to-r from-[#4CD6FF] via-[#7A8CFF] to-[#FF6B6B] shadow-[0_0_20px_rgba(76,214,255,0.5)] transition-[width] duration-150"
+          style={{ width: `${scrollProgress * 100}%` }}
+        />
+      </div>
+
       {/* TopAppBar */}
       <div className="w-full fixed top-0 z-50 px-4 pt-4">
         <header className="bg-white/5 backdrop-blur-2xl backdrop-saturate-150 rounded-full flex justify-between items-center px-8 py-3 shadow-2xl border border-white/10 w-full max-w-7xl mx-auto transition-all">
@@ -61,11 +213,11 @@ function App() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-white/70">
-            <a href="#about" className="hover:text-white transition-colors">About</a>
-            <a href="#experience" className="hover:text-white transition-colors">Experience</a>
-            <a href="#skills" className="hover:text-white transition-colors">Skills</a>
-            <a href="#projects" className="hover:text-white transition-colors">Projects</a>
-            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+            <a data-lenis-anchor href="#about" className="hover:text-white transition-colors">About</a>
+            <a data-lenis-anchor href="#experience" className="hover:text-white transition-colors">Experience</a>
+            <a data-lenis-anchor href="#skills" className="hover:text-white transition-colors">Skills</a>
+            <a data-lenis-anchor href="#projects" className="hover:text-white transition-colors">Projects</a>
+            <a data-lenis-anchor href="#contact" className="hover:text-white transition-colors">Contact</a>
           </nav>
 
           {/* Action Button & Mobile Menu */}
@@ -78,15 +230,18 @@ function App() {
         </header>
       </div>
 
-      <main className="relative min-h-screen pt-20 pb-32 px-6 overflow-hidden flex flex-col items-center">
+      <main ref={pageRef} className="unique-cursor-surface relative min-h-screen pt-20 pb-0 px-6 overflow-hidden flex flex-col items-center">
         {/* Background Decorative Elements */}
-        <div className="absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none animate-[float_3s_ease-in-out_infinite]"></div>
-        <div className="absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none animate-[float_4s_ease-in-out_infinite_reverse]"></div>
+        <div className="js-float-orb absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none"></div>
+        <div className="js-float-orb absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none"></div>
+        <div className="js-shooting-star absolute top-16 left-[10%] w-24 h-[2px] bg-gradient-to-r from-white/80 to-transparent rotate-[-18deg] opacity-0 blur-[1px] pointer-events-none"></div>
+        <div className="js-shooting-star absolute top-36 left-[26%] w-20 h-[2px] bg-gradient-to-r from-[#4CD6FF]/85 to-transparent rotate-[-16deg] opacity-0 blur-[1px] pointer-events-none"></div>
 
         {/* Hero Section */}
-        <section className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">
+       {/* <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">*/}
+       <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">
           {/* Hero Image Container */}
-          <div className="relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0 animate-[fadeInRight_1s_ease-out_forwards]">
+          <div className="js-hero-image relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0">
             {/* Cyan Geometric Accent */}
             <div className="absolute -top-4 -left-4 w-24 h-24 border border-tertiary rounded-full pointer-events-none opacity-40"></div>
             
@@ -103,7 +258,7 @@ function App() {
           </div>
 
           {/* Content Area */}
-          <div className="text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start animate-[fadeInLeft_1s_ease-out_0.2s_forwards] opacity-0">
+          <div className="js-hero-content text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start">
             <div>
               <h1 className="text-5xl lg:text-7xl font-headline font-bold leading-tight tracking-tight">
                 Hi, I'm <br className="hidden lg:block"/>
@@ -158,11 +313,11 @@ function App() {
             </p>
           </div>
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-6 p-4">
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 flex flex-col justify-center items-center text-center shadow-2xl hover:bg-white/10 transition-colors">
+            <div className="js-about-card bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 flex flex-col justify-center items-center text-center shadow-2xl hover:bg-white/10 transition-colors">
               <span className="text-5xl font-headline font-bold text-[#FFB3B0]">1+</span>
               <span className="text-xs text-on-surface/60 uppercase tracking-widest mt-4">Year Exp</span>
             </div>
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 flex flex-col justify-center items-center text-center shadow-2xl hover:bg-white/10 transition-colors translate-y-12">
+            <div className="js-about-card bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 flex flex-col justify-center items-center text-center shadow-2xl hover:bg-white/10 transition-colors translate-y-12">
               <span className="text-5xl font-headline font-bold text-[#4CD6FF]">12+</span>
               <span className="text-xs text-on-surface/60 uppercase tracking-widest mt-4">Projects</span>
             </div>
@@ -240,7 +395,7 @@ function App() {
           
           <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
             {['HTML/CSS', 'JavaScript', 'React', 'MongoDB', 'MySQL', 'C/C++', 'Python', 'Pandas', 'Scikit-learn', 'Vite', 'Tailwind', 'Git'].map((skill) => (
-              <div key={skill} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-8 py-3 flex items-center justify-center shadow-lg hover:shadow-[0_0_20px_rgba(255,107,107,0.2)] hover:-translate-y-1 transition-all cursor-default">
+              <div key={skill} className="js-skill-pill bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-8 py-3 flex items-center justify-center shadow-lg hover:shadow-[0_0_20px_rgba(255,107,107,0.2)] hover:-translate-y-1 transition-all cursor-default">
                 <span className="text-[#E5E2E1] font-medium tracking-wide">{skill}</span>
               </div>
             ))}
@@ -307,7 +462,7 @@ function App() {
             ].map((project, idx) => (
               <motion.div
                 key={idx}
-                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all duration-500 group shadow-2xl flex flex-col h-full hover:border-white/20"
+                className="js-project-card bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all duration-500 group shadow-2xl flex flex-col h-full hover:border-white/20"
                 variants={projectReveal}
                 initial="hidden"
                 whileInView="visible"
@@ -445,14 +600,44 @@ function App() {
           </a>
         </aside>
 
-        {/* Floating Chat Action */}
-        <div className="fixed bottom-10 right-6 z-50">
-          <button className="bg-[#FF6B6B] hover:bg-[#ff5555] text-white p-4 rounded-full shadow-2xl flex items-center gap-2 group active:scale-90 transition-all duration-300">
-            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>chat_bubble</span>
-            <span className="max-w-0 overflow-hidden group-hover:max-w-[100px] transition-all duration-300 font-bold text-sm whitespace-nowrap">Let's Chat</span>
-          </button>
-        </div>
+        {/* Scroll To Top */}
+        {showScrollTop && (
+          <div className="fixed bottom-10 right-6 z-50">
+            <button
+              type="button"
+              aria-label="Scroll back to top"
+              onClick={() => {
+                if (lenisRef.current) {
+                  lenisRef.current.scrollTo(0, {
+                    duration: 1.2,
+                    easing: (t) => 1 - Math.pow(1 - t, 4),
+                  });
+                } else {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="w-14 h-14 rounded-full flex items-center justify-center text-white bg-black hover:bg-[#121212] shadow-[0_12px_30px_rgba(0,0,0,0.45)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.55)] active:scale-90 transition-all duration-300 border border-white/20"
+            >
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>arrow_upward</span>
+            </button>
+          </div>
+        )}
       </main>
+
+      <div
+        className="hidden md:block fixed top-0 left-0 z-[90] pointer-events-none w-10 h-10 rounded-full border border-[#4CD6FF]/70 transition-transform duration-150 ease-out"
+        style={{
+          transform: `translate(${cursorPosition.x - 20}px, ${cursorPosition.y - 20}px) scale(${cursorActive ? 1.5 : 1})`,
+          opacity: cursorVisible ? 1 : 0,
+        }}
+      />
+      <div
+        className="hidden md:block fixed top-0 left-0 z-[91] pointer-events-none w-2.5 h-2.5 rounded-full bg-[#FF6B6B] shadow-[0_0_12px_rgba(255,107,107,0.8)] transition-transform duration-75 ease-out"
+        style={{
+          transform: `translate(${cursorPosition.x - 5}px, ${cursorPosition.y - 5}px) scale(${cursorActive ? 0.8 : 1})`,
+          opacity: cursorVisible ? 1 : 0,
+        }}
+      />
 
 
     </>

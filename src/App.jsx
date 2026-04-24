@@ -12,15 +12,17 @@ function App() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [cursorVisible, setCursorVisible] = useState(false);
   const [cursorActive, setCursorActive] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formStatus, setFormStatus] = useState('idle'); // idle, sending, success, error
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({
-      lerp: 0.065,
+      lerp: 0.05,
       smoothWheel: true,
-      wheelMultiplier: 0.75,
-      touchMultiplier: 1.1,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
       syncTouch: true,
       infinite: false,
     });
@@ -152,10 +154,11 @@ function App() {
 
       gsap.fromTo(
         '.js-project-card',
-        { autoAlpha: 0, y: 36 },
+        { autoAlpha: 0, y: 36, scale: 0.95 },
         {
           autoAlpha: 1,
           y: 0,
+          scale: 1,
           duration: 0.75,
           stagger: 0.12,
           ease: 'power3.out',
@@ -165,6 +168,76 @@ function App() {
           },
         }
       );
+
+      // Hero Name Staggered Reveal
+      const heroName = document.querySelector('.js-hero-name');
+      if (heroName) {
+        const text = heroName.textContent;
+        heroName.innerHTML = text.split('').map(char => 
+          `<span style="display:inline-block">${char === ' ' ? '&nbsp;' : char}</span>`
+        ).join('');
+        
+        gsap.from(heroName.children, {
+          y: 30,
+          opacity: 0,
+          rotateX: -90,
+          stagger: 0.03,
+          duration: 0.8,
+          ease: 'back.out(1.7)',
+          delay: 0.5
+        });
+      }
+
+      // Parallax Background Orbs
+      gsap.to('.js-parallax-orb', {
+        y: -150,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1,
+        }
+      });
+
+      // Magnetic Buttons Logic
+      const magneticButtons = document.querySelectorAll('.js-magnetic');
+      magneticButtons.forEach((btn) => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          gsap.to(btn, {
+            x: x * 0.4,
+            y: y * 0.4,
+            duration: 0.4,
+            ease: 'power2.out'
+          });
+        });
+        btn.addEventListener('mouseleave', () => {
+          gsap.to(btn, {
+            x: 0,
+            y: 0,
+            duration: 0.6,
+            ease: 'elastic.out(1, 0.3)'
+          });
+        });
+      });
+
+      // Enhanced Section Title Reveals
+      gsap.utils.toArray('section h2').forEach((title) => {
+        gsap.from(title, {
+          y: 40,
+          opacity: 0,
+          skewY: 3,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: title,
+            start: 'top 85%',
+          }
+        });
+      });
     }, pageRef);
 
     return () => {
@@ -183,6 +256,45 @@ function App() {
     };
   }, []);
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+    
+    setFormStatus('sending');
+
+    try {
+      // Using Web3Forms - simple and zero-dependency
+      // Replace 85a633cc-aa1f-4144-8cd7-1f6487a7c85e with your key from https://web3forms.com/
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: "85a633cc-aa1f-4144-8cd7-1f6487a7c85e", 
+          ...formData,
+          from_name: "Portfolio Contact Form",
+          subject: `New Message from ${formData.name}`
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setFormStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setFormStatus('idle'), 5000);
+      } else {
+        setFormStatus('error');
+        setTimeout(() => setFormStatus('idle'), 5000);
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 5000);
+    }
+  };
+
   const sectionReveal = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
@@ -195,12 +307,6 @@ function App() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full h-[3px] z-[70] bg-white/5">
-        <div
-          className="h-full bg-gradient-to-r from-[#4CD6FF] via-[#7A8CFF] to-[#FF6B6B] shadow-[0_0_20px_rgba(76,214,255,0.5)] transition-[width] duration-150"
-          style={{ width: `${scrollProgress * 100}%` }}
-        />
-      </div>
 
       {/* TopAppBar */}
       <div className="w-full fixed top-0 z-50 px-4 pt-4">
@@ -222,7 +328,7 @@ function App() {
 
           {/* Action Button & Mobile Menu */}
           <div className="flex items-center gap-4">
-            <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" className="hidden md:block font-label text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-2 hover:bg-white hover:text-black hover:border-white transition-colors duration-300 shadow-lg">
+            <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" className="js-magnetic hidden md:block font-label text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-2 hover:bg-white hover:text-black hover:border-white transition-colors duration-300 shadow-lg">
               Resume
             </a>
             <span className="material-symbols-outlined lg:hidden text-white cursor-pointer hover:opacity-80">menu</span>
@@ -232,37 +338,81 @@ function App() {
 
       <main ref={pageRef} className="unique-cursor-surface relative min-h-screen pt-20 pb-0 px-6 overflow-hidden flex flex-col items-center">
         {/* Background Decorative Elements */}
-        <div className="js-float-orb absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none"></div>
-        <div className="js-float-orb absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none"></div>
+        <div className="js-float-orb js-parallax-orb absolute top-[20%] -right-20 w-64 h-64 border-2 border-[#FF6B6B] rounded-full opacity-20 pointer-events-none"></div>
+        <div className="js-float-orb js-parallax-orb absolute top-[40%] -left-10 w-32 h-32 bg-[#4CD6FF] rounded-full mix-blend-screen filter blur-3xl opacity-20 pointer-events-none"></div>
         <div className="js-shooting-star absolute top-16 left-[10%] w-24 h-[2px] bg-gradient-to-r from-white/80 to-transparent rotate-[-18deg] opacity-0 blur-[1px] pointer-events-none"></div>
         <div className="js-shooting-star absolute top-36 left-[26%] w-20 h-[2px] bg-gradient-to-r from-[#4CD6FF]/85 to-transparent rotate-[-16deg] opacity-0 blur-[1px] pointer-events-none"></div>
 
         {/* Hero Section */}
        {/* <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">*/}
-       <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">
+       <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">
           {/* Hero Image Container */}
-          <div className="js-hero-image relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0">
+          <motion.div 
+            initial={{ opacity: 0, x: 70, scale: 0.92 }}
+            animate={{ 
+              opacity: 1, 
+              x: 0, 
+              scale: 1,
+              y: [0, -15, 0] 
+            }}
+            transition={{ 
+              opacity: { duration: 1 },
+              x: { duration: 1 },
+              scale: { duration: 1 },
+              y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+            }}
+            className="js-hero-image relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0"
+          >
+            {/* Animated Rotating Border */}
+            <div className="absolute inset-[-5px] rounded-[2.5rem] overflow-hidden pointer-events-none opacity-40 dark:opacity-60">
+              <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_20%,#FF6B6B_40%,transparent_60%,#4CD6FF_80%,transparent_100%)] animate-rotate-border" />
+            </div>
+
+            {/* Pulsing Glow Effect */}
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-gradient-to-tr from-[#FF6B6B]/20 to-[#4CD6FF]/20 rounded-2xl blur-[40px] pointer-events-none" 
+            />
+            
             {/* Cyan Geometric Accent */}
-            <div className="absolute -top-4 -left-4 w-24 h-24 border border-tertiary rounded-full pointer-events-none opacity-40"></div>
+            <motion.div 
+              animate={{ rotate: 360, y: [0, -10, 0] }}
+              transition={{ 
+                rotate: { duration: 15, repeat: Infinity, ease: "linear" },
+                y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+              }}
+              className="absolute -top-4 -left-4 w-24 h-24 border border-[#4CD6FF]/50 rounded-full pointer-events-none z-20"
+            ></motion.div>
             
             <div className="w-full h-full rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(255,107,107,0.15)] relative z-10 transition-transform duration-500 hover:scale-[1.02]">
               <img 
                 alt="Elegant portrait of Subroto Chanda Shuvo" 
-                className="w-full h-full object-cover" 
+                className="w-full h-full object-cover dark:brightness-90" 
                 src="/Photo.png"
               />
             </div>
             
             {/* Floating Decorative Coral Ring */}
-            <div className="absolute -bottom-8 -right-8 w-40 h-40 border-[12px] border-[#FF6B6B]/15 rounded-full pointer-events-none lg:translate-x-12 lg:translate-y-12"></div>
-          </div>
+            <motion.div 
+              animate={{ rotate: -360, x: [0, 15, 0] }}
+              transition={{ 
+                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                x: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+              }}
+              className="absolute -bottom-8 -right-8 w-40 h-40 border-[12px] border-[#FF6B6B]/15 rounded-full pointer-events-none lg:translate-x-12 lg:translate-y-12 z-0"
+            ></motion.div>
+          </motion.div>
 
           {/* Content Area */}
           <div className="js-hero-content text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start">
             <div>
               <h1 className="text-5xl lg:text-7xl font-headline font-bold leading-tight tracking-tight">
                 Hi, I'm <br className="hidden lg:block"/>
-                <span className="text-[#FF6B6B]">Subroto Chanda Shuvo</span>
+                <span className="js-hero-name text-[#FF6B6B]">Subroto Chanda Shuvo</span>
               </h1>
               <p className="text-xl lg:text-2xl font-body text-on-surface/80 mt-4 font-light">
                 MERN Stack Developer
@@ -270,7 +420,20 @@ function App() {
             </div>
             
             <div className="flex flex-col sm:flex-row items-center lg:justify-start gap-6 py-4">
-              <button className="bg-gradient-to-r from-[#FFB3B0] to-[#FF6B6B] text-on-primary-container px-8 py-4 rounded-full flex items-center gap-2 font-bold shadow-[0_0_30px_rgba(255,107,107,0.3)] transform hover:scale-105 active:scale-95 transition-all">
+              <button 
+                onClick={() => {
+                  if (lenisRef.current) {
+                    lenisRef.current.scrollTo('#contact', {
+                      offset: -90,
+                      duration: 1.5,
+                      easing: (t) => 1 - Math.pow(1 - t, 4),
+                    });
+                  } else {
+                    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="js-magnetic bg-gradient-to-r from-[#FFB3B0] to-[#FF6B6B] text-on-primary-container px-8 py-4 rounded-full flex items-center gap-2 font-bold shadow-[0_0_30px_rgba(255,107,107,0.3)] transform hover:scale-105 active:scale-95 transition-all"
+              >
                 Hire Me
                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
               </button>
@@ -365,7 +528,8 @@ function App() {
                 <div className="md:hidden mt-4">
                   <h3 className="text-2xl font-bold text-[#E5E2E1] font-headline">PDS Training</h3>
                   <p className="text-[#4CD6FF] mt-1 font-label">SUST</p>
-                  <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Comprehensive training in Python, Data Science, and fundamental algorithm design.</p>
+                  <p className="text-sm text-on-surface/60 font-light mt-3 leading-relaxed">Teach physics, ICT, mathematics, chemistry, and biology.
+                  Comprehensive training in technology and programming for school students.</p>
                 </div>
               </div>
               <div className="absolute left-[-9px] md:left-1/2 md:-ml-2 w-5 h-5 bg-[#4CD6FF] rounded-full top-2 md:top-auto ring-4 ring-[#131313] group-hover:scale-125 transition-transform duration-300 shadow-[0_0_15px_#4CD6FF]"></div>
@@ -428,12 +592,12 @@ function App() {
                 liveUrl: "https://candid-douhua-d628ca.netlify.app/"
               },
               {
-                title: "Payoo Mobile",
-                desc: "A mobile application interface project focused on clean UX and core wallet interactions.",
+                title: "Paw Mart",
+                desc: "An e-commerce themed project for showcasing pet products in an engaging storefront.",
                 tech: ["HTML", "CSS", "JavaScript"],
-                color: "text-[#FFB3B0]",
-                image: "/proj-payoo.png",
-                liveUrl: "https://subrotochandashuvo.github.io/Payo-Mobile-Application/home.html"
+                color: "text-[#4CD6FF]",
+                image: "/proj-pawmart.png",
+                liveUrl: "https://cosmic-melba-af77ae.netlify.app/"
               },
               {
                 title: "Store of Applications",
@@ -444,20 +608,20 @@ function App() {
                 liveUrl: "https://flourishing-lily-5fb3c3.netlify.app/AllApps/23"
               },
               {
-                title: "Paw Mart",
-                desc: "An e-commerce themed project for showcasing pet products in an engaging storefront.",
-                tech: ["HTML", "CSS", "JavaScript"],
-                color: "text-[#4CD6FF]",
-                image: "/proj-pawmart.png",
-                liveUrl: "https://cosmic-melba-af77ae.netlify.app/"
-              },
-              {
                 title: "Emergency Hotline",
                 desc: "A hotline utility application built to improve emergency information access quickly.",
                 tech: ["HTML", "CSS", "JavaScript"],
                 color: "text-[#FF6B6B]",
                 image: "/proj-emergency.png",
                 liveUrl: "https://subrotochandashuvo.github.io/Emergency-Hotline/"
+              },
+              {
+                title: "Payoo Mobile",
+                desc: "A mobile application interface project focused on clean UX and core wallet interactions.",
+                tech: ["HTML", "CSS", "JavaScript"],
+                color: "text-[#FFB3B0]",
+                image: "/proj-payoo.png",
+                liveUrl: "https://subrotochandashuvo.github.io/Payo-Mobile-Application/home.html"
               }
             ].map((project, idx) => (
               <motion.div
@@ -517,27 +681,67 @@ function App() {
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FFB3B0] via-[#FF6B6B] to-[#4CD6FF]"></div>
             
-            <form className="space-y-6 relative z-10" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6 relative z-10" onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-label text-white/70 ml-1">Your Name</label>
-                  <input type="text" id="name" placeholder="John Doe" className="w-full bg-[#131313]/60 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B] transition-all" />
+                  <input 
+                    type="text" 
+                    id="name" 
+                    required
+                    placeholder="John Doe" 
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-[#131313]/60 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B] transition-all" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-label text-white/70 ml-1">Email Address</label>
-                  <input type="email" id="email" placeholder="john@example.com" className="w-full bg-[#131313]/60 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B] transition-all" />
+                  <input 
+                    type="email" 
+                    id="email" 
+                    required
+                    placeholder="john@example.com" 
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full bg-[#131313]/60 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B] transition-all" 
+                  />
                 </div>
               </div>
               
               <div className="space-y-2">
                 <label htmlFor="message" className="text-sm font-label text-white/70 ml-1">Your Message</label>
-                <textarea id="message" rows="5" placeholder="Tell me about your project..." className="w-full bg-[#131313]/60 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B] transition-all resize-none"></textarea>
+                <textarea 
+                  id="message" 
+                  rows="5" 
+                  required
+                  placeholder="Tell me about your project..." 
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full bg-[#131313]/60 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/30 focus:outline-none focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B] transition-all resize-none"
+                ></textarea>
               </div>
               
-              <button type="submit" className="w-full bg-gradient-to-r from-[#FFB3B0] to-[#FF6B6B] text-on-primary-container py-4 rounded-xl font-bold shadow-[0_0_30px_rgba(255,107,107,0.2)] transform hover:translate-y-[-2px] active:translate-y-[1px] transition-all flex justify-center items-center gap-2">
-                Send Message
-                <span className="material-symbols-outlined text-lg">send</span>
+              <button 
+                type="submit" 
+                disabled={formStatus === 'sending'}
+                className={`w-full bg-gradient-to-r from-[#FFB3B0] to-[#FF6B6B] text-on-primary-container py-4 rounded-xl font-bold shadow-[0_0_30px_rgba(255,107,107,0.2)] transform hover:translate-y-[-2px] active:translate-y-[1px] transition-all flex justify-center items-center gap-2 ${formStatus === 'sending' ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                {formStatus === 'sending' ? 'Sending...' : 'Send Message'}
+                <span className="material-symbols-outlined text-lg">{formStatus === 'sending' ? 'sync' : 'send'}</span>
               </button>
+
+              {formStatus === 'success' && (
+                <div className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-center text-sm font-medium animate-pulse">
+                  Message sent successfully! I'll get back to you soon.
+                </div>
+              )}
+
+              {formStatus === 'error' && (
+                <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-center text-sm font-medium">
+                  Oops! Something went wrong. Please try again later.
+                </div>
+              )}
             </form>
           </div>
         </motion.section>
@@ -580,8 +784,8 @@ function App() {
           <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-on-surface/40 text-xs font-label">© {new Date().getFullYear()} Subroto Chanda Shuvo. All rights reserved.</p>
             <div className="flex gap-6 text-on-surface/40 text-xs font-label">
-              <a href="#" className="hover:text-white/80 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white/80 transition-colors">Terms of Service</a>
+              {/* <a href="#" className="hover:text-white/80 transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-white/80 transition-colors">Terms of Service</a> */}
             </div>
           </div>
         </footer>

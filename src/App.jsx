@@ -169,21 +169,21 @@ function App() {
         }
       );
 
-      // Hero Name Staggered Reveal
+      // Hero Name Staggered Reveal (Split by Words to prevent breaking)
       const heroName = document.querySelector('.js-hero-name');
       if (heroName) {
         const text = heroName.textContent;
-        heroName.innerHTML = text.split('').map(char => 
-          `<span style="display:inline-block">${char === ' ' ? '&nbsp;' : char}</span>`
-        ).join('');
+        heroName.innerHTML = text.split(' ').map(word => 
+          `<span style="display:inline-block; white-space:nowrap">${word}</span>`
+        ).join(' ');
         
         gsap.from(heroName.children, {
-          y: 30,
+          y: 20,
           opacity: 0,
-          rotateX: -90,
-          stagger: 0.03,
+          rotateX: -45,
+          stagger: 0.1,
           duration: 0.8,
-          ease: 'back.out(1.7)',
+          ease: 'power3.out',
           delay: 0.5
         });
       }
@@ -345,8 +345,19 @@ function App() {
 
         {/* Hero Section */}
        {/* <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">*/}
-       <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center justify-between gap-12 lg:gap-24 mt-8 lg:mt-20">
-          {/* Hero Image Container */}
+        <section className="js-hero relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row-reverse lg:items-center justify-between gap-8 lg:gap-24 mt-8 lg:mt-20">
+          {/* Header Info - Order 1 on Mobile */}
+          <div className="order-1 lg:hidden text-center">
+            <h1 className="text-5xl font-headline font-bold leading-tight tracking-tight">
+              Hi, I'm <br />
+              <span className="js-hero-name text-[#FF6B6B]">Subroto Chanda Shuvo</span>
+            </h1>
+            <p className="text-xl font-body text-on-surface/80 mt-4 font-light">
+              MERN Stack Developer
+            </p>
+          </div>
+
+          {/* Hero Image Container - Order 2 on Mobile */}
           <motion.div 
             initial={{ opacity: 0, x: 70, scale: 0.92 }}
             animate={{ 
@@ -361,7 +372,7 @@ function App() {
               scale: { duration: 1 },
               y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
             }}
-            className="js-hero-image relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-12 lg:mb-0"
+            className="order-2 js-hero-image relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-4 lg:mb-0"
           >
             {/* Animated Rotating Border */}
             <div className="absolute inset-[-5px] rounded-[2.5rem] overflow-hidden pointer-events-none opacity-40 dark:opacity-60">
@@ -407,9 +418,9 @@ function App() {
             ></motion.div>
           </motion.div>
 
-          {/* Content Area */}
-          <div className="js-hero-content text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start">
-            <div>
+          {/* Content Area - Order 3 on Mobile */}
+          <div className="order-3 js-hero-content text-center lg:text-left w-full lg:w-1/2 space-y-8 relative z-20 flex flex-col items-center lg:items-start">
+            <div className="hidden lg:block">
               <h1 className="text-5xl lg:text-7xl font-headline font-bold leading-tight tracking-tight">
                 Hi, I'm <br className="hidden lg:block"/>
                 <span className="js-hero-name text-[#FF6B6B]">Subroto Chanda Shuvo</span>
@@ -438,9 +449,14 @@ function App() {
                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
               </button>
               
-              <a className="flex items-center gap-2 text-on-surface/60 hover:text-[#FFB3B0] transition-colors py-2 group" href="/Resume.pdf" target="_blank" rel="noopener noreferrer">
-                <span className="font-label tracking-widest text-sm uppercase">Download CV</span>
-                <span className="material-symbols-outlined text-sm group-hover:translate-y-1 transition-transform">south</span>
+              <a 
+                className="js-magnetic flex items-center gap-2 bg-[#4CD6FF]/10 dark:bg-[#4CD6FF]/10 hover:bg-[#4CD6FF]/20 text-[#4CD6FF] border border-[#4CD6FF]/30 px-6 py-4 rounded-full transition-all group font-label tracking-wide text-sm font-semibold shadow-[0_0_20px_rgba(76,214,255,0.2)]" 
+                href="/Resume.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <span>Download Resume</span>
+                <span className="material-symbols-outlined text-lg group-hover:translate-y-1 transition-transform">south</span>
               </a>
             </div>
             
@@ -558,10 +574,36 @@ function App() {
           </div>
           
           <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-            {['HTML/CSS', 'JavaScript', 'React', 'MongoDB', 'MySQL', 'C/C++', 'Python', 'Pandas', 'Scikit-learn', 'Vite', 'Tailwind', 'Git'].map((skill) => (
-              <div key={skill} className="js-skill-pill bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-8 py-3 flex items-center justify-center shadow-lg hover:shadow-[0_0_20px_rgba(255,107,107,0.2)] hover:-translate-y-1 transition-all cursor-default">
-                <span className="text-[#E5E2E1] font-medium tracking-wide">{skill}</span>
-              </div>
+            {['HTML/CSS', 'JavaScript', 'React', 'MongoDB', 'Express.js', 'Node.js', 'MySQL', 'C/C++', 'Python', 'Pandas', 'Scikit-learn', 'Vite', 'Tailwind', 'Git'].map((skill, index) => (
+              <motion.div 
+                key={skill} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05, duration: 0.5 }}
+                whileHover={{ 
+                  scale: 1.1, 
+                  rotate: [0, -2, 2, 0],
+                  boxShadow: "0 0 25px rgba(255,107,107,0.4)"
+                }}
+                className="js-reveal-item js-skill-pill bg-black/5 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-full px-8 py-3 flex items-center justify-center shadow-lg transition-all cursor-default relative group overflow-hidden"
+              >
+                <motion.div 
+                  animate={{ 
+                    y: [0, -3, 0],
+                  }}
+                  transition={{ 
+                    duration: 2 + Math.random() * 2, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: Math.random() * 2
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <span className="text-on-surface dark:text-[#E5E2E1] font-medium tracking-wide z-10">{skill}</span>
+                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B6B]/0 via-[#FF6B6B]/10 to-[#FF6B6B]/0 opacity-0 group-hover:opacity-100 transform -translateX-full group-hover:translate-x-full transition-all duration-1000"></div>
+              </motion.div>
             ))}
           </div>
         </motion.section>

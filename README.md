@@ -1,16 +1,55 @@
-# React + Vite
+# 🚀 Personal Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal portfolio website! This project showcases my skills, projects, and professional background as a developer.
 
-Currently, two official plugins are available:
+🔗 **Live Portfolio:**  
+https://cute-boba-ffe34e.netlify.app  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+📄 **Resume:**  
+https://cute-boba-ffe34e.netlify.app/Resume.pdf  
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📌 About Me
 
-## Expanding the ESLint configuration
+I am a passionate developer focused on building clean, user-friendly, and efficient web applications. I enjoy solving problems, learning new technologies, and continuously improving my skills.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** HTML, CSS, JavaScript, React  
+- **Styling:** Tailwind CSS  
+- **Animation & UX:** Framer Motion, GSAP, Lenis  
+- **Tools:** Git, GitHub, Netlify
+
+---
+
+## ✨ Features
+
+- Responsive and modern UI  
+- Clean and intuitive navigation  
+- Project showcase section  
+- Downloadable resume  
+- Contact section for easy communication  
+
+---
+
+## 📂 Sections Included
+
+- 🏠 Home  
+- 👨‍💻 About Me  
+- 💼 Projects  
+- 📄 Resume  
+- 📞 Contact  
+
+---
+
+## 🚀 Getting Started
+
+To run this project locally:
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+open index.html

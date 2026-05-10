@@ -65,6 +65,9 @@ export default {
               "headline": ["Newsreader", "serif"],
               "body": ["Manrope", "sans-serif"],
               "label": ["Manrope", "sans-serif"]
+          },
+          "animation": {
+              "spin-slow": "spin 15s linear infinite"
           }
       },
   },

@@ -357,65 +357,75 @@ function App() {
             </p>
           </div>
 
-          {/* Hero Image Container - Order 2 on Mobile */}
+          {/* Hero Image Container - New Unique Profile Picture View */}
           <motion.div 
             initial={{ opacity: 0, x: 70, scale: 0.92 }}
             animate={{ 
               opacity: 1, 
               x: 0, 
               scale: 1,
-              y: [0, -15, 0] 
             }}
-            transition={{ 
-              opacity: { duration: 1 },
-              x: { duration: 1 },
-              scale: { duration: 1 },
-              y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-            }}
-            className="order-2 js-hero-image relative w-full max-w-md lg:max-w-none lg:w-1/2 aspect-[4/5] mb-4 lg:mb-0"
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="order-2 js-hero-image relative w-full max-w-sm lg:max-w-md xl:w-1/2 aspect-[4/5] mb-8 lg:mb-0 group cursor-pointer"
           >
-            {/* Animated Rotating Border */}
-            <div className="absolute inset-[-5px] rounded-[2.5rem] overflow-hidden pointer-events-none opacity-40 dark:opacity-60">
-              <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_20%,#FF6B6B_40%,transparent_60%,#4CD6FF_80%,transparent_100%)] animate-rotate-border" />
-            </div>
+            {/* Background Offset Frosted Glass Layer */}
+            <div className="absolute top-6 left-6 w-full h-full rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl transition-transform duration-700 ease-out group-hover:translate-x-3 group-hover:translate-y-3 z-0 pointer-events-none"></div>
 
-            {/* Pulsing Glow Effect */}
+            {/* Glowing Backdrop */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#FF6B6B]/40 via-transparent to-[#4CD6FF]/40 rounded-3xl blur-[50px] opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0"></div>
+
+            {/* Main Image Container */}
             <motion.div 
-              animate={{ 
-                scale: [1, 1.1, 1],
-                opacity: [0.3, 0.5, 0.3]
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-0 bg-gradient-to-tr from-[#FF6B6B]/20 to-[#4CD6FF]/20 rounded-2xl blur-[40px] pointer-events-none" 
-            />
-            
-            {/* Cyan Geometric Accent */}
-            <motion.div 
-              animate={{ rotate: 360, y: [0, -10, 0] }}
-              transition={{ 
-                rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-                y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-              }}
-              className="absolute -top-4 -left-4 w-24 h-24 border border-[#4CD6FF]/50 rounded-full pointer-events-none z-20"
-            ></motion.div>
-            
-            <div className="w-full h-full rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(255,107,107,0.15)] relative z-10 transition-transform duration-500 hover:scale-[1.02]">
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-full relative z-10 rounded-3xl overflow-hidden border border-white/20 shadow-[0_0_40px_rgba(255,107,107,0.2)] bg-[#131313] transition-all duration-700 group-hover:-translate-y-4 group-hover:-translate-x-4 group-hover:shadow-[0_20px_60px_rgba(76,214,255,0.3)]"
+            >
+              {/* Image Overlay Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500 z-10"></div>
+              
               <img 
                 alt="Elegant portrait of Subroto Chanda Shuvo" 
-                className="w-full h-full object-cover dark:brightness-90" 
+                className="w-full h-full object-cover object-top scale-100 group-hover:scale-110 transition-transform duration-1000 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] dark:brightness-95 filter saturate-110 group-hover:saturate-100" 
                 src="/Photo.png"
               />
-            </div>
-            
-            {/* Floating Decorative Coral Ring */}
+
+              {/* Status Badge inside image */}
+              <div className="absolute top-6 left-6 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full transform -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                <span className="text-white text-xs font-semibold tracking-wider">AVAILABLE FOR HIRE</span>
+              </div>
+            </motion.div>
+
+            {/* Decorative Floating Tech Badge */}
             <motion.div 
-              animate={{ rotate: -360, x: [0, 15, 0] }}
-              transition={{ 
-                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                x: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-              }}
-              className="absolute -bottom-8 -right-8 w-40 h-40 border-[12px] border-[#FF6B6B]/15 rounded-full pointer-events-none lg:translate-x-12 lg:translate-y-12 z-0"
-            ></motion.div>
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              className="absolute -bottom-10 -right-10 w-32 h-32 md:w-40 md:h-40 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center shadow-xl z-20 overflow-hidden group-hover:scale-110 group-hover:border-[#4CD6FF]/50 transition-all duration-500"
+            >
+              {/* Inner content counter-rotating so it stays upright */}
+              <motion.div 
+                animate={{ rotate: -360 }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                className="text-center"
+              >
+                <span className="block text-[#FF6B6B] font-bold text-xl md:text-2xl font-headline">MERN</span>
+                <span className="block text-white/70 text-[10px] md:text-xs tracking-widest font-label mt-1">STACK</span>
+              </motion.div>
+              
+              {/* Circular Text using SVG */}
+              <svg className="absolute inset-0 w-full h-full animate-spin-slow opacity-50" viewBox="0 0 100 100">
+                <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
+                <text className="text-[10px] font-label fill-[#4CD6FF] tracking-[0.2em] uppercase">
+                  <textPath href="#circlePath" startOffset="0%">
+                    Developer • Designer • Creator • 
+                  </textPath>
+                </text>
+              </svg>
+            </motion.div>
+            
+            {/* Accent Glowing Dots */}
+            <div className="absolute top-1/4 -right-4 w-2 h-2 bg-[#FF6B6B] rounded-full shadow-[0_0_10px_#FF6B6B] animate-ping pointer-events-none z-30"></div>
+            <div className="absolute bottom-1/4 -left-6 w-3 h-3 bg-[#4CD6FF] rounded-full shadow-[0_0_15px_#4CD6FF] animate-pulse pointer-events-none z-30 delay-300"></div>
           </motion.div>
 
           {/* Content Area - Order 3 on Mobile */}

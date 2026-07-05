@@ -52,6 +52,28 @@ const PROJECTS = [
   },
 ];
 
+const EDUCATION = [
+  {
+    id: 1,
+    examName: "B.Sc. in CSE",
+    instituteName: "Metropolitan University",
+    rollOrId: "ID: 222-115-198",
+    result: "CGPA: 3.72",
+    passingYear: "2026",
+    certificateUrl: "",
+  },
+  {
+    id: 2,
+    examName: "H.S.C.",
+    instituteName: "Moulvibazer Govt College",
+    details: "Science Section",
+    rollOrId: "Roll: 109344",
+    result: "GPA: 4.83",
+    passingYear: "2023",
+    certificateUrl: "",
+  },
+];
+
 function App() {
   const pageRef = useRef(null);
   const lenisRef = useRef(null);
@@ -970,6 +992,93 @@ function App() {
                 arrow_right_alt
               </span>
             </button>
+          </div>
+        </motion.section>
+
+
+        {/* Education & Certification Section */}
+        <motion.section
+          id="education"
+          className="relative w-full max-w-4xl mx-auto mt-40 pt-24 px-6 md:px-0 scroll-mt-20"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-headline font-bold text-[#e5e2e1]">
+              Education & <span className="text-[#4CD6FF]">Certification</span>
+            </h2>
+            <p className="text-on-surface/60 mt-4 text-sm tracking-widest uppercase font-label">
+              Academic Qualifications & Credentials
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+            {EDUCATION.map((edu, idx) => (
+              <motion.div
+                key={edu.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.15 }}
+                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl relative overflow-hidden flex flex-col justify-between hover:border-white/20 transition-all duration-300 hover:scale-[1.02]"
+              >
+                {/* Accent Top Bar */}
+                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${idx === 0 ? "from-[#4CD6FF] to-[#FF6B6B]" : "from-[#FF6B6B] to-[#FFB3B0]"}`}></div>
+
+                <div>
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold font-headline text-[#e5e2e1]">
+                        {edu.examName}
+                      </h3>
+                      <p className="text-[#4CD6FF] font-medium text-sm mt-1">
+                        {edu.instituteName}
+                      </p>
+                      {edu.details && (
+                        <p className="text-white/50 text-xs mt-1 font-light italic">
+                          {edu.details}
+                        </p>
+                      )}
+                    </div>
+                    <span className="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full text-xs text-white/70 font-semibold flex-shrink-0">
+                      {edu.passingYear}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/5 text-sm">
+                    <div>
+                      <span className="block text-xs text-white/40 font-label uppercase tracking-wider mb-1">
+                        Result
+                      </span>
+                      <span className="font-semibold text-white/90">{edu.result}</span>
+                    </div>
+                    <div>
+                      <span className="block text-xs text-white/40 font-label uppercase tracking-wider mb-1">
+                        Credential
+                      </span>
+                      <span className="font-semibold text-white/90">{edu.rollOrId}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {edu.certificateUrl && (
+                  <div className="mt-8">
+                    <a
+                      href={edu.certificateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-[#4CD6FF]/10 hover:bg-[#4CD6FF]/20 text-[#4CD6FF] border border-[#4CD6FF]/20 hover:border-[#4CD6FF]/40 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 active:scale-95"
+                    >
+                      <span className="material-symbols-outlined text-sm">workspace_premium</span>
+                      View Certificate
+                    </a>
+                  </div>
+                )}
+              </motion.div>
+            ))}
           </div>
         </motion.section>
 

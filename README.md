@@ -3,7 +3,7 @@
 Welcome to my personal portfolio website! This project showcases my skills, projects, and professional background as a developer.
 
 🔗 **Live Portfolio:**  
-https://cute-boba-ffe34e.netlify.app  
+[https://cute-boba-ffe34e.netlify.app ](https://subroto-chanda-shuvo.netlify.app/) 
 
 📄 **Resume:**  
 https://cute-boba-ffe34e.netlify.app/Resume.pdf  
